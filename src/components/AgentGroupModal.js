@@ -116,60 +116,66 @@ export default () => {
       {
         key: 'groupName',
         label: <FormattedMessage id="group_name" />,
-        disabled: action === 'UpdateAgentGroup',
+        disabled: action === 'UpdateAgentGroup' || agentGroup.groupName === 'default',
         required: action === 'CreateAgentGroup',
         message: <FormattedMessage id="form_item_required" />,
       },
       {
         key: 'description',
         label: <FormattedMessage id="group_description" />,
+        disabled: agentGroup.groupName === 'default',
         required: true,
         message: <FormattedMessage id="form_item_required" />,
       },
       {
         key: 'tags',
         label: <FormattedMessage id="group_tags" />,
-        widget: () => (
-          <Form.List name="tags">
-            {(fields, { add, remove }) => (
-              <>
-                {fields.map(({ key, name, ...restField }) => (
-                  <Space key={key} style={{ display: 'flex' }} align="baseline">
-                    <Form.Item
-                      {...restField}
-                      name={[name, 'name']}
-                      rules={[{
-                        required: true,
-                        message: <FormattedMessage id="form_item_required" />,
-                      }]}
-                      style={{ width: 150, marginBottom: 4 }}
-                    >
-                      <Input placeholder="Key" />
-                    </Form.Item>
-                    =
-                    <Form.Item
-                      {...restField}
-                      name={[name, 'value']}
-                      rules={[{
-                        required: true,
-                        message: <FormattedMessage id="form_item_required" />,
-                      }]}
-                      style={{ width: 400, marginBottom: 4 }}
-                    >
-                      <Input placeholder="Value" />
-                    </Form.Item>
-                    <MinusCircleOutlined onClick={() => remove(name)} />
-                  </Space>
-                ))}
-                <Form.Item>
-                  <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                    <FormattedMessage id="add_field" />
-                  </Button>
-                </Form.Item>
-              </>
-            )}
-          </Form.List>
-        ),
+        widget: () => {
+          if (agentGroup.groupName === 'default') {
+            return <Input placeholder="Default agent group does not have tags." disabled />
+          }
+          return (
+            <Form.List name="tags">
+              {(fields, { add, remove }) => (
+                <>
+                  {fields.map(({ key, name, ...restField }) => (
+                    <Space key={key} style={{ display: 'flex' }} align="baseline">
+                      <Form.Item
+                        {...restField}
+                        name={[name, 'name']}
+                        rules={[{
+                          required: true,
+                          message: <FormattedMessage id="form_item_required" />,
+                        }]}
+                        style={{ width: 150, marginBottom: 4 }}
+                      >
+                        <Input placeholder="Key" />
+                      </Form.Item>
+                      =
+                      <Form.Item
+                        {...restField}
+                        name={[name, 'value']}
+                        rules={[{
+                          required: true,
+                          message: <FormattedMessage id="form_item_required" />,
+                        }]}
+                        style={{ width: 400, marginBottom: 4 }}
+                      >
+                        <Input placeholder="Value" />
+                      </Form.Item>
+                      <MinusCircleOutlined onClick={() => remove(name)} />
+                    </Space>
+                  ))}
+                  <Form.Item>
+                    <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                      <FormattedMessage id="add_field" />
+                    </Button>
+                  </Form.Item>
+                </>
+              )}
+            </Form.List>
+          );
+        },
       },
     ],
   };

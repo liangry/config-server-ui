@@ -236,8 +236,9 @@ export default () => {
           <Popconfirm
             title={<FormattedMessage id="group_delete_confirm" />}
             onConfirm={() => deleteAgentGroup(record.groupName)}
+            disabled={record.groupName === 'default'}
           >
-            <a href="#">
+            <a href="#" disabled={record.groupName === 'default'}>
               <FormattedMessage id="delete" />
             </a>
           </Popconfirm>
