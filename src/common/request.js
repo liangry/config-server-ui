@@ -55,12 +55,16 @@ export const interactive = async (action, params) => {
     },
   };
   const response = await fetch(`/api/v1/User/${action}`, options);
-  const blob = await response.blob();
-  const arrayBuffer = await blob.arrayBuffer();
-  const data = new Uint8Array(arrayBuffer);
-  // const contentLength = parseInt(response.headers.get("content-length"));
-  // console.log(`response content length: ${contentLength}, raw body: ${data}`);
-  const respType = root.lookupType(`configserver.proto.${action}Response`);
-  // console.log(`decoded response body: ${JSON.stringify(respType.decode(data))}`);
-  return [response.ok, response.status, response.statusText, respType.decode(data)];
+  try {
+    const blob = await response.blob();
+    const arrayBuffer = await blob.arrayBuffer();
+    const data = new Uint8Array(arrayBuffer);
+    // const contentLength = parseInt(response.headers.get("content-length"));
+    // console.log(`response content length: ${contentLength}, raw body: ${data}`);
+    const respType = root.lookupType(`configserver.proto.${action}Response`);
+    // console.log(`decoded response body: ${JSON.stringify(respType.decode(data))}`);
+    return [response.ok, response.status, response.statusText, respType.decode(data)];
+  } catch (e) {
+    return [response.ok, response.status, response.statusText, { message: `${methods[action]} ${action}`}];
+  }
 };
