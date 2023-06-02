@@ -125,12 +125,6 @@ export default () => {
         }),
       },
       {
-        key: 'context',
-        label: <FormattedMessage id="config_context" />,
-        required: true,
-        message: <FormattedMessage id="form_item_required" />,
-      },
-      {
         key: 'detail',
         label: <FormattedMessage id="config_detail" />,
         required: true,
@@ -148,9 +142,14 @@ export default () => {
             fontSize={13}
             width="100%"
             minLines={10}
-            maxLines={20}
+            maxLines={30}
           />
         ),
+      },
+      {
+        key: 'context',
+        label: <FormattedMessage id="config_context" />,
+        message: <FormattedMessage id="form_item_required" />,
       },
     ],
   };
