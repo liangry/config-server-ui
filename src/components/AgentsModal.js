@@ -48,11 +48,6 @@ export default () => {
       title: <FormattedMessage id="agent_version" />,
     },
     {
-      key: 'category',
-      dataIndex: 'category',
-      title: <FormattedMessage id="agent_category" />,
-    },
-    {
       key: 'ip',
       dataIndex: 'ip',
       title: <FormattedMessage id="agent_ip" />,
