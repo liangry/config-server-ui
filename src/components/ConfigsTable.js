@@ -147,7 +147,13 @@ export default () => {
       title: <FormattedMessage id="config_applied_group_count" />,
       render: (value, record) => (
         <a onClick={() => {openAppliedAgentGroups(record.name)}}>
-          {value > 0 ? `${value} [${record.appliedAgentGroups.join(', ')}]`: (value === 0 ? value : '')}
+          {value > 0 ?
+            `${value} [${record.appliedAgentGroups.join(', ')}]` :
+            (value === 0 ?
+              <FormattedMessage id="add_group" values={{ value }} /> :
+              ''
+            )
+          }
         </a>
       ),
     },

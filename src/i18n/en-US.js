@@ -22,6 +22,8 @@ export default {
   delete: 'Delete',
   select: 'Select',
   add_field: 'Add field',
+  add_group: '{value} (Add Agent Group)',
+  add_config: '{value} (Add Config)',
   form_item_required: 'The field is required',
   group_name: 'Group Name',
   group_description: 'Description',

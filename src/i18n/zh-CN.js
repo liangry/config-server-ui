@@ -22,6 +22,8 @@ export default {
   delete: '删除',
   select: '选择',
   add_field: '添加字段',
+  add_group: '{value} (添加 Agent Group)',
+  add_config: '{value} (添加配置)',
   form_item_required: '此项必填',
   group_name: 'Agent Group 名称',
   group_description: '描述',

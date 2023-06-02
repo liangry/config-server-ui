@@ -214,7 +214,13 @@ export default () => {
       title: <FormattedMessage id="group_applied_config_count" />,
       render: (value, record) => (
         <a onClick={() => {openAppliedConfigs(record.groupName)}}>
-          {value > 0 ? `${value} [${record.appliedConfigs.join(', ')}]`: (value === 0 ? value : '')}
+          {value > 0 ?
+            `${value} [${record.appliedConfigs.join(', ')}]` :
+            (value === 0 ?
+              <FormattedMessage id="add_config" values={{ value }} /> :
+              ''
+            )
+          }
         </a>
       ),
     },
