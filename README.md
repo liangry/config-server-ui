@@ -1,70 +1,54 @@
-# Getting Started with Create React App
+# Alibaba iLogtail Config Server UI
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+这是基于阿里巴巴 [iLogtail](https://github.com/alibaba/ilogtail) 项目 [Config Server 通信协议](https://ilogtail.gitbook.io/ilogtail-docs/v/pre-release/config-server/communication-protocol)的一个前端实现。使用 [React](https://react.docschina.org) + [Ant Design 组件库](https://ant-design.antgroup.com/index-cn) + [Create React App 脚手架工具](https://create-react-app.bootcss.com)进行开发，旨在为用户提供一个简单、实用、易嵌入的 Config Server 前端控制台。
 
-## Available Scripts
+## 快速开始
 
-In the project directory, you can run:
+```shell
+git clone https://github.com/iLogtail/config-server-ui
+cd config-server-ui
+yarn install
+yarn start
+```
 
-### `npm start`
+执行完上述命令，你所在的机器上会启动一个前端服务，默认端口`3000`，通过`chrome`等浏览器访问`http://127.0.0.1:3000`将看到这个简洁的控制台界面。
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+![UI](public/config-server-ui-demo.png)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+当然，要使它能够正常工作，你应该按照[此文档](https://ilogtail.gitbook.io/ilogtail-docs/v/pre-release/config-server/quick-start)事先启动`Config Server`。`Config Server`的默认监听端口是`8899`，因此，`yarn start`命令启动的前端服务默认将对接`http://127.0.0.1:8899`。如果想修改，可以指定`CONFIG_SERVER_ADDRESS`环境变量，例如：
 
-### `npm test`
+```shell
+CONFIG_SERVER_ADDRESS=http://192.168.3.17:9988 yarn start
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 构建部署
 
-### `npm run build`
+`yarn start`是为开发服务的，部署时为了获取最佳性能，你需要以下命令进行构建：
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```shell
+yarn build
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+命令执行完成后，把整个`build`文件夹里的静态文件部署到`nginx`服务器。同时，为了能够获取`Config Server`的动态内容，需要使用`nginx`的反向代理功能，转发`/api/v1`的请求到`Config Server`，以下是一个配置示例：
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```shell
+root /path/to/config-server-ui/build;
 
-### `npm run eject`
+location /api/v1/User {
+    proxy_pass http://127.0.0.1:8899/User;
+}
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+这样，你可以很方便地把构建产物集成和嵌入到自己的运维管理平台。
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 国际化
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+`config-server-ui`提供最基础的国际化功能，目前支持中文`zh-CN`和英文`en-US`。如果需要切换，需要修改`App.js`的这一行：
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```shell
+const locale = 'zh-CN';
+```
 
-## Learn More
+## Licence
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+[Apache 2.0 License](./LICENSE)
