@@ -20,6 +20,7 @@ import {useContext, useEffect, useState} from "react";
 import {interactive} from "../common/request";
 import {FormattedMessage} from "react-intl";
 import {configTypes} from "../common/const";
+import {mapConfig} from "../common/mapper";
 
 export default () => {
   const {
@@ -47,17 +48,7 @@ export default () => {
       }
 
       console.log(response.message);
-      const data = response.configDetails.map((item) => {
-        return {
-          key: item.name,
-          rowKey: item.name,
-          name: item.name,
-          type: item.type,
-          version: item.version,
-          context: item.context,
-          detail: item.detail,
-        };
-      });
+      const data = response.configDetails.map((item) => mapConfig(item));
       setDataSource(data);
     });
   };
@@ -102,13 +93,7 @@ export default () => {
         message.error(`${statusCode} ${statusText}: ${response.message || 'unknown error'}`);
         return;
       }
-      const data = {
-        name: response.configDetail.name,
-        type: response.configDetail.type,
-        version: response.configDetail.version,
-        context: response.configDetail.context,
-        detail: response.configDetail.detail,
-      };
+      const data = mapConfig(response.configDetail);
       console.log(data);
       setConfig(data);
       setConfigVisible(true);

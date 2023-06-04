@@ -41,3 +41,21 @@ export const markAppliedAgentGroup = (agentGroup, appliedGroupNames) => {
     applied: appliedGroupNames.includes(agentGroup.groupName),
   };
 };
+
+export const mapConfig = (config) => {
+  return {
+    key: config.name,
+    name: config.name,
+    type: config.type,
+    version: config.version,
+    context: config.context,
+    detail: config.detail,
+  };
+};
+
+export const markAppliedConfig = (config, appliedConfigNames) => {
+  return {
+    ...config,
+    applied: appliedConfigNames.includes(config.name),
+  };
+};

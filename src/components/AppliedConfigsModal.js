@@ -25,6 +25,7 @@ import AceEditor from "react-ace";
 import 'brace/mode/yaml';
 import 'brace/theme/xcode';
 import {configTypes} from "../common/const";
+import {mapConfig, markAppliedConfig} from "../common/mapper";
 
 export default () => {
   const {
@@ -74,16 +75,7 @@ export default () => {
         message.error(`${err[1]} ${err[2]}: ${err[3].message || 'unknown error'}`);
         return;
       }
-      const data = res.map(it => it[3].configDetail).map(it => {
-        return {
-          key: it.name,
-          name: it.name,
-          type: it.type,
-          version: it.version,
-          context: it.context,
-          detail: it.detail,
-        };
-      });
+      const data = res.map(it => mapConfig(it[3].configDetail));
       console.log(data);
       setAppliedConfigs(data);
     });
@@ -96,18 +88,7 @@ export default () => {
         return;
       }
 
-      const data = response.configDetails.map(item => {
-        return {
-          key: item.name,
-          rowKey: item.name,
-          name: item.name,
-          type: item.type,
-          version: item.version,
-          context: item.context,
-          detail: item.detail,
-          applied: appliedConfigs.map(it => it.name).includes(item.name),
-        };
-      });
+      const data = response.configDetails.map(item => markAppliedConfig(mapConfig(item), appliedConfigs));
       console.log(data);
       setConfigOptions(data);
       setConfigOptionsVisible(true);
