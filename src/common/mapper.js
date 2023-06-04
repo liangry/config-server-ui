@@ -59,3 +59,23 @@ export const markAppliedConfig = (config, appliedConfigNames) => {
     applied: appliedConfigNames.includes(config.name),
   };
 };
+
+export const mapAgent = (agent) => {
+  return {
+    key: agent.agentId,
+    agentType: agent.agentType,
+    agentId: agent.agentId,
+
+    // attributes
+    version: agent.attributes.version,
+    category: agent.attributes.category,
+    ip: agent.attributes.ip,
+    region: agent.attributes.region,
+    zone: agent.attributes.zone,
+
+    tags: agent.tags.map(it => `${it.name} = ${it.value}`).join(', '),
+    runningStatus: agent.runningStatus,
+    startupTime: agent.startupTime,
+    interval: agent.interval,
+  };
+};

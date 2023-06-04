@@ -20,6 +20,7 @@ import {AgentGroupContext} from "../common/context";
 import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons";
 import {interactive} from "../common/request";
 import {mapTimestamp} from "../common/util";
+import {mapAgent} from "../common/mapper";
 
 export default () => {
   const {
@@ -84,26 +85,7 @@ export default () => {
         console.log(`${statusCode} ${statusText}: ${response.message || 'unknown error'}`);
         return;
       }
-      const data = response.agents.map(item => {
-        return {
-          key: item.agentId,
-          rowKey: item.agentId,
-          agentType: item.agentType,
-          agentId: item.agentId,
-
-          // attributes
-          version: item.attributes.version,
-          category: item.attributes.category,
-          ip: item.attributes.ip,
-          region: item.attributes.region,
-          zone: item.attributes.zone,
-
-          tags: item.tags.map(it => `${it.name} = ${it.value}`).join(', '),
-          runningStatus: item.runningStatus,
-          startupTime: item.startupTime,
-          interval: item.interval,
-        };
-      });
+      const data = response.agents.map((item) => mapAgent(item));
       console.log(data);
       setAgents(data);
     });
