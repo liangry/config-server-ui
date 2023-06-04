@@ -20,6 +20,7 @@ import {AgentGroupContext, AgentGroupsContext, AgentsContext, AppliedConfigsCont
 import AgentsModal from "./AgentsModal";
 import AppliedConfigsModal from "./AppliedConfigsModal";
 import AgentGroupModal from "./AgentGroupModal";
+import {correlateAgentGroup, mapAgentGroup} from "../common/mapper";
 
 export default () => {
   const {
@@ -51,16 +52,7 @@ export default () => {
       console.log(response.message);
       const data = response.agentGroups.map((item) => {
         const old = dataSource.find(it => it.groupName === item.groupName);
-        return {
-          key: item.groupName,
-          rowKey: item.groupName,
-          groupName: item.groupName,
-          description: item.description,
-          tags: item.tags.map(it => `${it.name} = ${it.value}`).join(', '),
-          agentCount: old ? old.agentCount : undefined,
-          appliedConfigCount: old ? old.appliedConfigCount : undefined,
-          appliedConfigs: old ? old.appliedConfigs : undefined,
-        };
+        return correlateAgentGroup(mapAgentGroup(item), old);
       });
       setDataSource(data);
     });
@@ -152,16 +144,7 @@ export default () => {
         message.error(`${statusCode} ${statusText}: ${response.message || 'unknown error'}`);
         return;
       }
-      const data = {
-        groupName: response.agentGroup.groupName,
-        description: response.agentGroup.description,
-        tags: response.agentGroup.tags.map(item => {
-          return {
-            name: item.name,
-            value: item.value,
-          }
-        }),
-      };
+      const data = mapAgentGroup(response.agentGroup);
       console.log(data);
       setAgentGroup(data);
       setAgentGroupVisible(true);
@@ -197,6 +180,7 @@ export default () => {
       key: 'tags',
       dataIndex: 'tags',
       title: <FormattedMessage id="group_tags" />,
+      render: (tags) => tags.map(item => `${item.name} = ${item.value}`).join(', '),
     },
     {
       key: 'agentCount',

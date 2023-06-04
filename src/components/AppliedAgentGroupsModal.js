@@ -19,6 +19,7 @@ import React, {useContext, useEffect, useState} from "react";
 import {AppliedAgentGroupsContext, AgentGroupOptionsContext} from "../common/context";
 import {interactive} from "../common/request";
 import AgentGroupOptionsModal from "./AgentGroupOptionsModal";
+import {mapAgentGroup, markAppliedAgentGroup} from "../common/mapper";
 
 export default () => {
   const {
@@ -68,19 +69,7 @@ export default () => {
         message.error(`${err[1]} ${err[2]}: ${err[3].message || 'unknown error'}`);
         return;
       }
-      const data = res.map(it => it[3].agentGroup).map(it => {
-        return {
-          key: it.groupName,
-          groupName: it.groupName,
-          description: it.description,
-          tags: it.tags.map(i => {
-            return {
-              name: i.name,
-              value: i.value,
-            }
-          }),
-        };
-      });
+      const data = res.map(it => mapAgentGroup(it[3].agentGroup));
       console.log(data);
       setAppliedAgentGroups(data);
     });
@@ -93,21 +82,8 @@ export default () => {
         return;
       }
 
-      const data = response.agentGroups.map(item => {
-        return {
-          key: item.groupName,
-          rowKey: item.groupName,
-          groupName: item.groupName,
-          description: item.description,
-          tags: item.tags.map(it => {
-            return {
-              name: it.name,
-              value: it.value,
-            }
-          }),
-          applied: appliedAgentGroups.map(it => it.groupName).includes(item.groupName),
-        };
-      });
+      const appliedGroupNames = appliedAgentGroups.map(it => it.groupName);
+      const data = response.agentGroups.map(item => markAppliedAgentGroup(mapAgentGroup(item), appliedGroupNames));
       console.log(data);
       setAgentGroupOptions(data);
       setAgentGroupOptionsVisible(true);
