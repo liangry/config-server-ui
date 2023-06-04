@@ -16,7 +16,7 @@ import {Modal, Table} from "antd";
 import {FormattedMessage} from "react-intl";
 import React, {useContext} from "react";
 import {AgentsContext} from "../common/context";
-import {mapTimestamp} from "../common/util";
+import {mapTags, mapTimestamp} from "../common/util";
 
 export default () => {
   const {
@@ -71,6 +71,7 @@ export default () => {
       key: 'tags',
       dataIndex: 'tags',
       title: <FormattedMessage id="agent_tags" />,
+      render: (tags) => mapTags(tags),
     },
     {
       key: 'runningStatus',

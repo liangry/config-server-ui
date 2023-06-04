@@ -73,7 +73,7 @@ export const mapAgent = (agent) => {
     region: agent.attributes.region,
     zone: agent.attributes.zone,
 
-    tags: agent.tags.map(it => `${it.name} = ${it.value}`).join(', '),
+    tags: agent.tags,
     runningStatus: agent.runningStatus,
     startupTime: agent.startupTime,
     interval: agent.interval,

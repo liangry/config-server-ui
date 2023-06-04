@@ -21,6 +21,7 @@ import AgentsModal from "./AgentsModal";
 import AppliedConfigsModal from "./AppliedConfigsModal";
 import AgentGroupModal from "./AgentGroupModal";
 import {correlateAgentGroup, mapAgent, mapAgentGroup} from "../common/mapper";
+import {mapTags} from "../common/util";
 
 export default () => {
   const {
@@ -161,7 +162,7 @@ export default () => {
       key: 'tags',
       dataIndex: 'tags',
       title: <FormattedMessage id="group_tags" />,
-      render: (tags) => tags.map(item => `${item.name} = ${item.value}`).join(', '),
+      render: (tags) => mapTags(tags),
     },
     {
       key: 'agentCount',

@@ -20,6 +20,7 @@ import {AppliedAgentGroupsContext, AgentGroupOptionsContext} from "../common/con
 import {interactive} from "../common/request";
 import AgentGroupOptionsModal from "./AgentGroupOptionsModal";
 import {mapAgentGroup, markAppliedAgentGroup} from "../common/mapper";
+import {mapTags} from "../common/util";
 
 export default () => {
   const {
@@ -179,7 +180,7 @@ export default () => {
       {
         key: 'tags',
         label: <FormattedMessage id="group_tags" />,
-        viewWidget: (field) => (field.value.map(item => `${item.name} = ${item.value}`).join(', ')),
+        viewWidget: (field) => mapTags(field.value),
       },
     ],
   };
