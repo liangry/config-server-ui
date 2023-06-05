@@ -21,6 +21,22 @@ yarn start
 CONFIG_SERVER_ADDRESS=http://192.168.3.17:9988 yarn start
 ```
 
+另外，也可以通过环境变量指定前端启动地址和端口：
+
+```shell
+HOST=127.0.0.1 PORT=3100 yarn start
+```
+
+## 创建采集配置
+
+创建步骤：点击采集配置标签页 -> 点击创建按钮 -> 填写表单 -> 点击保存配置。
+
+![Config](public/config-server-ui-file-to-stdout-config.png)
+
+关联`Agent Group`步骤：采集配置标签页 -> 找到需要关联的配置 -> 点击添加`Agent Group` -> 点击添加 -> 勾选`Agent Group` -> 点击确定。
+
+取消关联`Agent Group`步骤：采集配置标签页 -> 找到需要取消关联的配置 -> 点击关联的`Agent Group` -> 点击需要取消关联的标签页 -> 点击确定。
+
 ## 构建部署
 
 `yarn start`是为开发服务的，部署时为了获取最佳性能，你需要以下命令进行构建：
