@@ -186,6 +186,25 @@ export default () => {
     ],
   };
 
+  const appliedItems = appliedAgentGroups.map((item) => {
+    return {
+      key: item.key,
+      label: item.groupName,
+      children:
+        <Form
+          layout="horizontal"
+          form={form}
+        >
+          <FormBuilder
+            meta={meta}
+            form={form}
+            initialValues={item}
+            viewMode
+          />
+        </Form>
+    };
+  });
+
   return (
     <Modal
       title={<FormattedMessage id="applied_agent_group_title" values={{ configName: config.name }} />}
@@ -206,24 +225,7 @@ export default () => {
             <FormattedMessage id="add" />
           </Space>
         }
-        items={appliedAgentGroups.map((agentGroup) => {
-          return {
-            key: agentGroup.key,
-            label: agentGroup.groupName,
-            children:
-              <Form
-                layout="horizontal"
-                form={form}
-              >
-                <FormBuilder
-                  meta={meta}
-                  form={form}
-                  initialValues={agentGroup}
-                  viewMode
-                />
-              </Form>
-          };
-        })}
+        items={appliedItems}
       />
       <AgentGroupOptionsContext.Provider
         value={{
