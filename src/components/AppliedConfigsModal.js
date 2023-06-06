@@ -186,10 +186,6 @@ export default () => {
         ),
       },
       {
-        key: 'context',
-        label: <FormattedMessage id="config_context" />,
-      },
-      {
         key: 'detail',
         label: <FormattedMessage id="config_detail" />,
         viewWidget: field => (
@@ -206,8 +202,31 @@ export default () => {
           />
         ),
       },
+      {
+        key: 'context',
+        label: <FormattedMessage id="config_context" />,
+      },
     ],
   };
+
+  const appliedItems = appliedConfigs.map((item) => {
+    return {
+      key: item.key,
+      label: item.name,
+      children:
+        <Form
+          layout="horizontal"
+          form={form}
+        >
+          <FormBuilder
+            meta={meta}
+            form={form}
+            initialValues={item}
+            viewMode
+          />
+        </Form>
+    };
+  });
 
   return (
     <Modal
@@ -229,24 +248,7 @@ export default () => {
             <FormattedMessage id="add" />
           </Space>
         }
-        items={appliedConfigs.map((config) => {
-          return {
-            key: config.key,
-            label: config.name,
-            children:
-              <Form
-                layout="horizontal"
-                form={form}
-              >
-                <FormBuilder
-                  meta={meta}
-                  form={form}
-                  initialValues={config}
-                  viewMode
-                />
-              </Form>
-          };
-        })}
+        items={appliedItems}
       />
       <ConfigOptionsContext.Provider
         value={{
