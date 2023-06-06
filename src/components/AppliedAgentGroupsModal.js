@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Form, message, Modal, Tabs} from "antd";
+import {Form, message, Modal, Space, Tabs} from "antd";
 import {FormattedMessage} from "react-intl";
 import FormBuilder from "antd-form-builder";
 import React, {useContext, useEffect, useState} from "react";
@@ -21,6 +21,7 @@ import {interactive} from "../common/request";
 import AgentGroupOptionsModal from "./AgentGroupOptionsModal";
 import {mapAgentGroup, markAppliedAgentGroup} from "../common/mapper";
 import {mapTags} from "../common/util";
+import {PlusOutlined} from "@ant-design/icons";
 
 export default () => {
   const {
@@ -199,6 +200,12 @@ export default () => {
         activeKey={activeAppliedAgentGroupTab}
         onChange={switchAppliedConfigTab}
         onEdit={editAppliedAgentGroupTab}
+        addIcon={
+          <Space style={{ padding: "8px 16px 8px 16px" }}>
+            <PlusOutlined />
+            <FormattedMessage id="add" />
+          </Space>
+        }
         items={appliedAgentGroups.map((agentGroup) => {
           return {
             key: agentGroup.key,

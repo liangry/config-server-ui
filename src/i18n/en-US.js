@@ -21,6 +21,7 @@ export default {
   open: 'Open',
   delete: 'Delete',
   select: 'Select',
+  add: 'Add',
   add_field: 'Add field',
   add_group: '{value} (Add Agent Group)',
   add_config: '{value} (Add Config)',

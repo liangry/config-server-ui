@@ -21,6 +21,7 @@ export default {
   open: '查看',
   delete: '删除',
   select: '选择',
+  add: '添加',
   add_field: '添加字段',
   add_group: '{value} (添加 Agent Group)',
   add_config: '{value} (添加配置)',
