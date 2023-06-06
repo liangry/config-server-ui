@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Divider, message, Popconfirm, Table} from "antd";
+import {Button, Divider, message, Popconfirm, Table} from "antd";
 import {useContext, useEffect, useState} from "react";
 import {interactive} from "../common/request";
 import {FormattedMessage} from "react-intl";
@@ -25,6 +25,7 @@ import {mapTags} from "../common/util";
 
 export default () => {
   const {
+    colorPrimary,
     agentGroup,
     agentGroupVisible,
     setAgentGroup,
@@ -169,9 +170,17 @@ export default () => {
       dataIndex: 'agentCount',
       title: <FormattedMessage id="group_agent_count" />,
       render: (value, record) => (
-        <a onClick={() => fetchAgents(record.groupName)}>
+        <Button
+          type="link"
+          style={{
+            paddingRight: 0,
+            paddingLeft: 0,
+            color: colorPrimary,
+          }}
+          onClick={() => fetchAgents(record.groupName)}
+        >
           {value}
-        </a>
+        </Button>
       ),
     },
     {
@@ -179,7 +188,15 @@ export default () => {
       dataIndex: 'appliedConfigCount',
       title: <FormattedMessage id="group_applied_config_count" />,
       render: (value, record) => (
-        <a onClick={() => {openAppliedConfigs(record.groupName)}}>
+        <Button
+          type="link"
+          style={{
+            paddingRight: 0,
+            paddingLeft: 0,
+            color: colorPrimary,
+          }}
+          onClick={() => {openAppliedConfigs(record.groupName)}}
+        >
           {value > 0 ?
             `${value} [${record.appliedConfigs.join(', ')}]` :
             (value === 0 ?
@@ -187,7 +204,7 @@ export default () => {
               ''
             )
           }
-        </a>
+        </Button>
       ),
     },
     {
@@ -195,18 +212,34 @@ export default () => {
       title: <FormattedMessage id="operate" />,
       render: (record) => (
         <>
-          <a onClick={() => getAgentGroup(record.groupName)}>
+          <Button
+            type="link"
+            style={{
+              paddingRight: 0,
+              paddingLeft: 0,
+              color: colorPrimary,
+            }}
+            onClick={() => getAgentGroup(record.groupName)}
+          >
             <FormattedMessage id="open" />
-          </a>
+          </Button>
           <Divider type="vertical" />
           <Popconfirm
             title={<FormattedMessage id="group_delete_confirm" />}
             onConfirm={() => deleteAgentGroup(record.groupName)}
             disabled={record.groupName === 'default'}
           >
-            <a href="#" disabled={record.groupName === 'default'}>
+            <Button
+              type="link"
+              style={{
+                paddingRight: 0,
+                paddingLeft: 0,
+                color: record.groupName === 'default' ? '' : colorPrimary,
+              }}
+              disabled={record.groupName === 'default'}
+            >
               <FormattedMessage id="delete" />
-            </a>
+            </Button>
           </Popconfirm>
         </>
       ),

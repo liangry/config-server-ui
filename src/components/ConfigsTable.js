@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Divider, message, Popconfirm, Table} from "antd";
+import {Button, Divider, message, Popconfirm, Table} from "antd";
 import {AppliedAgentGroupsContext, ConfigContext, ConfigsContext} from "../common/context";
 import AppliedAgentGroupsModal from "./AppliedAgentGroupsModal";
 import ConfigModal from "./ConfigModal";
@@ -24,6 +24,7 @@ import {mapConfig} from "../common/mapper";
 
 export default () => {
   const {
+    colorPrimary,
     config,
     configVisible,
     setConfig,
@@ -131,7 +132,14 @@ export default () => {
       dataIndex: 'appliedAgentGroupCount',
       title: <FormattedMessage id="config_applied_group_count" />,
       render: (value, record) => (
-        <a onClick={() => {openAppliedAgentGroups(record.name)}}>
+        <Button
+          type="link"
+          style={{
+            paddingRight: 0,
+            paddingLeft: 0,
+            color: colorPrimary,
+          }}
+          onClick={() => {openAppliedAgentGroups(record.name)}}>
           {value > 0 ?
             `${value} [${record.appliedAgentGroups.join(', ')}]` :
             (value === 0 ?
@@ -139,7 +147,7 @@ export default () => {
               ''
             )
           }
-        </a>
+        </Button>
       ),
     },
     {
@@ -147,17 +155,31 @@ export default () => {
       title: <FormattedMessage id="operate" />,
       render: (record) => (
         <>
-          <a onClick={() => getConfig(record.name)}>
+          <Button
+            type="link"
+            style={{
+              paddingRight: 0,
+              paddingLeft: 0,
+              color: colorPrimary,
+            }}
+            onClick={() => getConfig(record.name)}>
             <FormattedMessage id="open" />
-          </a>
+          </Button>
           <Divider type="vertical" />
           <Popconfirm
             title={<FormattedMessage id="config_delete_confirm" />}
             onConfirm={() => deleteConfig(record.name)}
           >
-            <a href="#">
+            <Button
+              type="link"
+              style={{
+                paddingRight: 0,
+                paddingLeft: 0,
+                color: colorPrimary,
+              }}
+            >
               <FormattedMessage id="delete" />
-            </a>
+            </Button>
           </Popconfirm>
         </>
       ),
