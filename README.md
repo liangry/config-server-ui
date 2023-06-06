@@ -57,6 +57,14 @@ location /api/v1/User {
 
 这样，你可以很方便地把构建产物集成和嵌入到自己的运维管理平台。
 
+## 主题颜色
+
+`config-server-ui`默认主题颜色是`Ant Design`的主色`#1677ff`，如果需要和你的集成管理平台统一配色，请修改`App.js`的这一行：
+
+```shell
+const colorPrimary = '#1677ff';
+```
+
 ## 国际化
 
 `config-server-ui`提供最基础的国际化功能，目前支持中文`zh-CN`和英文`en-US`。如果需要切换，需要修改`App.js`的这一行：

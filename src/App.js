@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import React, {useState} from 'react';
-import {Button, Card} from 'antd';
+import {Button, Card, ConfigProvider} from 'antd';
 import {FormattedMessage, IntlProvider} from 'react-intl';
 import {messages} from "./i18n/message";
 import AgentGroupsTable from "./components/AgentGroupsTable";
@@ -53,53 +53,68 @@ function App() {
     },
   ];
 
+  const colorPrimary = '#1677ff';
   const locale = 'zh-CN';
 
-  return (
-    <IntlProvider
-      messages={messages[locale]}
-      locale={locale}
+  const configServerCard = () => (
+    <Card
+      bordered={false}
+      title={
+        <FormattedMessage id="main_title" />
+      }
+      activeTabKey={tabKey}
+      tabList={tabList}
+      onTabChange={onTabChange}
+      tabBarExtraContent={
+        <Button onClick={onCreateClick}>
+          <FormattedMessage id="create" />
+        </Button>
+      }
     >
-      <Card
-        bordered={false}
-        title={
-          <FormattedMessage id="main_title" />
-        }
-        activeTabKey={tabKey}
-        tabList={tabList}
-        onTabChange={onTabChange}
-        tabBarExtraContent={
-          <Button onClick={onCreateClick}>
-            <FormattedMessage id="create" />
-          </Button>
-        }
+      {tabKey === 'AgentGroup' && (
+        <AgentGroupsContext.Provider
+          value={{
+            colorPrimary,
+            agentGroup,
+            agentGroupVisible,
+            setAgentGroup,
+            setAgentGroupVisible,
+          }}
+        >
+          <AgentGroupsTable />
+        </AgentGroupsContext.Provider>
+      )}
+      {tabKey === 'Config' && (
+        <ConfigsContext.Provider
+          value={{
+            colorPrimary,
+            config,
+            configVisible,
+            setConfig,
+            setConfigVisible,
+          }}
+        >
+          <ConfigsTable />
+        </ConfigsContext.Provider>
+      )}
+    </Card>
+  );
+
+  return (
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary,
+        },
+      }}
+    >
+      <IntlProvider
+        messages={messages[locale]}
+        locale={locale}
       >
-        {tabKey === 'AgentGroup' && (
-          <AgentGroupsContext.Provider
-            value={{
-              agentGroup,
-              agentGroupVisible,
-              setAgentGroup,
-              setAgentGroupVisible,
-            }}
-          >
-            <AgentGroupsTable />
-          </AgentGroupsContext.Provider>
-        )}
-        {tabKey === 'Config' && (
-          <ConfigsContext.Provider
-            value={{
-              config,
-              configVisible,
-              setConfig,
-              setConfigVisible,
-            }}
-          >
-            <ConfigsTable />
-          </ConfigsContext.Provider>
-        )}
-      </Card>
-    </IntlProvider>
+        {configServerCard()}
+      </IntlProvider>
+    </ConfigProvider>
   );
 }
 
