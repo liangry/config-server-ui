@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Form, message, Modal, Tabs} from "antd";
+import {Form, message, Modal, Space, Tabs} from "antd";
 import {FormattedMessage} from "react-intl";
 import FormBuilder from "antd-form-builder";
 import React, {useContext, useEffect, useState} from "react";
@@ -26,6 +26,7 @@ import 'brace/mode/yaml';
 import 'brace/theme/xcode';
 import {configTypes} from "../common/const";
 import {mapConfig, markAppliedConfig} from "../common/mapper";
+import {PlusOutlined} from "@ant-design/icons";
 
 export default () => {
   const {
@@ -222,6 +223,12 @@ export default () => {
         activeKey={activeAppliedConfigTab}
         onChange={switchAppliedConfigTab}
         onEdit={editAppliedConfigTab}
+        addIcon={
+          <Space style={{ padding: "8px 16px 8px 16px" }}>
+            <PlusOutlined />
+            <FormattedMessage id="add" />
+          </Space>
+        }
         items={appliedConfigs.map((config) => {
           return {
             key: config.key,
