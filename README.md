@@ -57,6 +57,15 @@ location /api/v1/User {
 
 这样，你可以很方便地把构建产物集成和嵌入到自己的运维管理平台。
 
+## docker 构建
+
+使用`docker build`命令构建镜像。使用`docker run`命令运行镜像时，可以通过设置`CONFIG_SERVER_ADDRESS`环境变量指定`Config Server`的地址端口。
+
+```shell
+docker build -t config-server-ui .
+docker run -e CONFIG_SERVER_ADDRESS=http://<ip>:<port> --rm -it -p 8080:80 config-server-ui
+```
+
 ## 主题颜色
 
 `config-server-ui`默认主题颜色是`Ant Design`的主色`#1677ff`，如果需要和你的集成管理平台统一配色，请修改`App.js`的这一行：
