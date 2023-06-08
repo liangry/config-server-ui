@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import {Button, Divider, message, Popconfirm, Table} from "antd";
-import {AppliedAgentGroupsContext, ConfigContext, ConfigsContext} from "../common/context";
+import {AppliedAgentGroupsContext, ConfigContext, ConfigsContext, RootContext} from "../common/context";
 import AppliedAgentGroupsModal from "./AppliedAgentGroupsModal";
 import ConfigModal from "./ConfigModal";
 import {useContext, useEffect, useState} from "react";
@@ -23,6 +23,7 @@ import {configTypes} from "../common/const";
 import {mapConfig} from "../common/mapper";
 
 export default () => {
+  const {root} = useContext(RootContext);
   const {
     colorPrimary,
     config,
@@ -41,7 +42,7 @@ export default () => {
 
   const fetchDataSource = () => {
     setLoading(true);
-    interactive(`ListConfigs`, {}).then(async ([ok, statusCode, statusText, response]) => {
+    interactive(root, `ListConfigs`, {}).then(async ([ok, statusCode, statusText, response]) => {
       setLoading(false);
       if (!ok) {
         message.error(`${statusCode} ${statusText}: ${response.message || 'unknown error'}`);
@@ -63,7 +64,7 @@ export default () => {
     const params = {
       configName: key,
     };
-    const [ok, statusCode, statusText, response] = await interactive(`GetAppliedAgentGroups`, params);
+    const [ok, statusCode, statusText, response] = await interactive(root, `GetAppliedAgentGroups`, params);
     if (!ok) {
       console.log(`fetch applied agent groups summary: ${statusCode} ${statusText}: ${response.message || 'unknown error'}`);
       return;
@@ -89,7 +90,7 @@ export default () => {
     const params = {
       configName,
     };
-    interactive(`GetConfig`, params).then(async ([ok, statusCode, statusText, response]) => {
+    interactive(root, `GetConfig`, params).then(async ([ok, statusCode, statusText, response]) => {
       if (!ok) {
         message.error(`${statusCode} ${statusText}: ${response.message || 'unknown error'}`);
         return;
@@ -105,7 +106,7 @@ export default () => {
     const params = {
       configName,
     };
-    interactive(`DeleteConfig`, params).then(async ([ok, statusCode, statusText, response]) => {
+    interactive(root, `DeleteConfig`, params).then(async ([ok, statusCode, statusText, response]) => {
       if (!ok) {
         message.error(`${statusCode} ${statusText}: ${response.message || 'unknown error'}`);
         return;

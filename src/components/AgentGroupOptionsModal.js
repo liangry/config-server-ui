@@ -15,10 +15,11 @@
 import {FormattedMessage} from "react-intl";
 import {Checkbox, message, Modal, Table} from "antd";
 import React, {useContext, useState} from "react";
-import {AgentGroupOptionsContext} from "../common/context";
+import {AgentGroupOptionsContext, RootContext} from "../common/context";
 import {interactive} from "../common/request";
 
 export default () => {
+  const {root} = useContext(RootContext);
   const {
     agentGroupOptionsVisible,
     agentGroupOptions,
@@ -54,7 +55,7 @@ export default () => {
       return;
     }
     const requests = agentGroupsBuffer.map(groupName => {
-      return interactive('ApplyConfigToAgentGroup', {
+      return interactive(root, 'ApplyConfigToAgentGroup', {
         groupName,
         configName: config.name,
       });

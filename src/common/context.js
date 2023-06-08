@@ -15,6 +15,7 @@
 import React from 'react';
 
 
+export const RootContext = React.createContext(false);
 export const AgentGroupsContext = React.createContext(false);
 export const ConfigsContext = React.createContext(false);
 export const AgentsContext = React.createContext(false);

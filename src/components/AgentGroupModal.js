@@ -16,13 +16,14 @@ import {Button, Form, Input, message, Modal, Space, Table} from "antd";
 import {FormattedMessage} from "react-intl";
 import FormBuilder from "antd-form-builder";
 import React, {useContext, useEffect, useState} from "react";
-import {AgentGroupContext} from "../common/context";
+import {AgentGroupContext, RootContext} from "../common/context";
 import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons";
 import {interactive} from "../common/request";
 import {mapTimestamp} from "../common/util";
 import {mapAgent} from "../common/mapper";
 
 export default () => {
+  const {root} = useContext(RootContext);
   const {
     agentGroupVisible,
     agentGroup,
@@ -63,7 +64,7 @@ export default () => {
       },
     };
     setLoading(true);
-    interactive(action, params).then(async ([ok, statusCode, statusText, response]) => {
+    interactive(root, action, params).then(async ([ok, statusCode, statusText, response]) => {
       setLoading(false);
       if (!ok) {
         message.error(`${statusCode} ${statusText}: ${response.message || 'unknown error'}`);
@@ -80,7 +81,7 @@ export default () => {
     const params = {
       groupName,
     };
-    interactive(`ListAgents`, params).then(async ([ok, statusCode, statusText, response]) => {
+    interactive(root, `ListAgents`, params).then(async ([ok, statusCode, statusText, response]) => {
       if (!ok) {
         console.log(`${statusCode} ${statusText}: ${response.message || 'unknown error'}`);
         return;

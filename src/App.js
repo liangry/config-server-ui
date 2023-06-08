@@ -12,20 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Card, ConfigProvider} from 'antd';
 import {FormattedMessage, IntlProvider} from 'react-intl';
 import {messages} from "./i18n/message";
 import AgentGroupsTable from "./components/AgentGroupsTable";
 import ConfigsTable from "./components/ConfigsTable";
-import {AgentGroupsContext, ConfigsContext} from "./common/context";
+import {AgentGroupsContext, ConfigsContext, RootContext} from "./common/context";
+import protobuf from "protobufjs";
+import proto from "./common/user.proto";
 
 function App() {
+  const [root, setRoot] = useState(null);
   const [tabKey, setTabKey] = useState('AgentGroup');
   const [agentGroup, setAgentGroup] = useState({});
   const [agentGroupVisible, setAgentGroupVisible] = useState(false);
   const [config, setConfig] = useState({});
   const [configVisible, setConfigVisible] = useState(false);
+
+  useEffect(() => {
+    console.log('Loading proto file...');
+    protobuf.load(proto).then(data => setRoot(data));
+  }, []);
 
   const onTabChange = (value) => {
     setTabKey(value);
@@ -112,7 +120,9 @@ function App() {
         messages={messages[locale]}
         locale={locale}
       >
-        {configServerCard()}
+        <RootContext.Provider value={root}>
+          {root !== null && configServerCard()}
+        </RootContext.Provider>
       </IntlProvider>
     </ConfigProvider>
   );

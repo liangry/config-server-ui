@@ -16,7 +16,7 @@ import {Form, message, Modal, Space, Tabs} from "antd";
 import {FormattedMessage} from "react-intl";
 import FormBuilder from "antd-form-builder";
 import React, {useContext, useEffect, useState} from "react";
-import {AppliedAgentGroupsContext, AgentGroupOptionsContext} from "../common/context";
+import {AppliedAgentGroupsContext, AgentGroupOptionsContext, RootContext} from "../common/context";
 import {interactive} from "../common/request";
 import AgentGroupOptionsModal from "./AgentGroupOptionsModal";
 import {mapAgentGroup, markAppliedAgentGroup} from "../common/mapper";
@@ -24,6 +24,7 @@ import {mapTags} from "../common/util";
 import {PlusOutlined} from "@ant-design/icons";
 
 export default () => {
+  const {root} = useContext(RootContext);
   const {
     appliedAgentGroupsVisible,
     setAppliedAgentGroupsVisible,
@@ -54,13 +55,13 @@ export default () => {
     const params = {
       configName,
     };
-    interactive(`GetAppliedAgentGroups`, params).then(async ([ok, statusCode, statusText, response]) => {
+    interactive(root, `GetAppliedAgentGroups`, params).then(async ([ok, statusCode, statusText, response]) => {
       if (!ok) {
         message.error(`${statusCode} ${statusText}: ${response.message || 'unknown error'}`);
         return;
       }
       const requests = response.agentGroupNames.map(groupName => {
-        return interactive('GetAgentGroup', {
+        return interactive(root, 'GetAgentGroup', {
           groupName,
         });
       });
@@ -78,7 +79,7 @@ export default () => {
   };
 
   const fetchAgentGroupOptions = () => {
-    interactive(`ListAgentGroups`, {}).then(async ([ok, statusCode, statusText, response]) => {
+    interactive(root, `ListAgentGroups`, {}).then(async ([ok, statusCode, statusText, response]) => {
       if (!ok) {
         message.error(`${statusCode} ${statusText}: ${response.message || 'unknown error'}`);
         return;
@@ -99,7 +100,7 @@ export default () => {
       return;
     }
     const requests = agentGroupsBuffer.map(groupName => {
-      return interactive('RemoveConfigFromAgentGroup', {
+      return interactive(root, 'RemoveConfigFromAgentGroup', {
         groupName,
         configName: config.name,
       });

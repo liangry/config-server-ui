@@ -16,7 +16,13 @@ import {Button, Divider, message, Popconfirm, Table} from "antd";
 import {useContext, useEffect, useState} from "react";
 import {interactive} from "../common/request";
 import {FormattedMessage} from "react-intl";
-import {AgentGroupContext, AgentGroupsContext, AgentsContext, AppliedConfigsContext} from "../common/context";
+import {
+  AgentGroupContext,
+  AgentGroupsContext,
+  AgentsContext,
+  AppliedConfigsContext,
+  RootContext
+} from "../common/context";
 import AgentsModal from "./AgentsModal";
 import AppliedConfigsModal from "./AppliedConfigsModal";
 import AgentGroupModal from "./AgentGroupModal";
@@ -24,6 +30,7 @@ import {correlateAgentGroup, mapAgent, mapAgentGroup} from "../common/mapper";
 import {mapTags} from "../common/util";
 
 export default () => {
+  const {root} = useContext(RootContext);
   const {
     colorPrimary,
     agentGroup,
@@ -44,7 +51,7 @@ export default () => {
 
   const fetchDataSource = () => {
     setLoading(true);
-    interactive(`ListAgentGroups`, {}).then(async ([ok, statusCode, statusText, response]) => {
+    interactive(root, `ListAgentGroups`, {}).then(async ([ok, statusCode, statusText, response]) => {
       setLoading(false);
       if (!ok) {
         message.error(`${statusCode} ${statusText}: ${response.message || 'unknown error'}`);
@@ -70,12 +77,12 @@ export default () => {
     const params = {
       groupName: key,
     };
-    const [ok1, statusCode1, statusText1, response1] = await interactive(`ListAgents`, params);
+    const [ok1, statusCode1, statusText1, response1] = await interactive(root, `ListAgents`, params);
     if (!ok1) {
       console.log(`fetch agents summary: ${statusCode1} ${statusText1}: ${response1.message || 'unknown error'}`);
       return;
     }
-    const [ok2, statusCode2, statusText2, response2] = await interactive(`GetAppliedConfigsForAgentGroup`, params);
+    const [ok2, statusCode2, statusText2, response2] = await interactive(root, `GetAppliedConfigsForAgentGroup`, params);
     if (!ok2) {
       console.log(`fetch applied configs summary: ${statusCode2} ${statusText2}: ${response2.message || 'unknown error'}`);
       return;
@@ -95,7 +102,7 @@ export default () => {
     const params = {
       groupName,
     };
-    interactive(`ListAgents`, params).then(async ([ok, statusCode, statusText, response]) => {
+    interactive(root, `ListAgents`, params).then(async ([ok, statusCode, statusText, response]) => {
       if (!ok) {
         message.error(`${statusCode} ${statusText}: ${response.message || 'unknown error'}`);
         return;
@@ -122,7 +129,7 @@ export default () => {
     const params = {
       groupName,
     };
-    interactive(`GetAgentGroup`, params).then(async ([ok, statusCode, statusText, response]) => {
+    interactive(root, `GetAgentGroup`, params).then(async ([ok, statusCode, statusText, response]) => {
       if (!ok) {
         message.error(`${statusCode} ${statusText}: ${response.message || 'unknown error'}`);
         return;
@@ -138,7 +145,7 @@ export default () => {
     const params = {
       groupName,
     };
-    interactive(`DeleteAgentGroup`, params).then(async ([ok, statusCode, statusText, response]) => {
+    interactive(root, `DeleteAgentGroup`, params).then(async ([ok, statusCode, statusText, response]) => {
       if (!ok) {
         message.error(`${statusCode} ${statusText}: ${response.message || 'unknown error'}`);
         return;
