@@ -16,7 +16,7 @@ import {Form, message, Modal, Space, Tabs} from "antd";
 import {FormattedMessage} from "react-intl";
 import FormBuilder from "antd-form-builder";
 import React, {useContext, useEffect, useState} from "react";
-import {AppliedConfigsContext, ConfigOptionsContext} from "../common/context";
+import {AppliedConfigsContext, ConfigOptionsContext, RootContext} from "../common/context";
 import {interactive} from "../common/request";
 import ConfigOptionsModal from "./ConfigOptionsModal";
 
@@ -29,6 +29,7 @@ import {mapConfig, markAppliedConfig} from "../common/mapper";
 import {PlusOutlined} from "@ant-design/icons";
 
 export default () => {
+  const {root} = useContext(RootContext);
   const {
     appliedConfigsVisible,
     setAppliedConfigsVisible,
@@ -59,13 +60,13 @@ export default () => {
     const params = {
       groupName,
     };
-    interactive(`GetAppliedConfigsForAgentGroup`, params).then(async ([ok, statusCode, statusText, response]) => {
+    interactive(root, `GetAppliedConfigsForAgentGroup`, params).then(async ([ok, statusCode, statusText, response]) => {
       if (!ok) {
         message.error(`${statusCode} ${statusText}: ${response.message || 'unknown error'}`);
         return;
       }
       const requests = response.configNames.map(configName => {
-        return interactive('GetConfig', {
+        return interactive(root, 'GetConfig', {
           configName,
         });
       });
@@ -83,7 +84,7 @@ export default () => {
   };
 
   const fetchConfigOptions = () => {
-    interactive(`ListConfigs`, {}).then(async ([ok, statusCode, statusText, response]) => {
+    interactive(root, `ListConfigs`, {}).then(async ([ok, statusCode, statusText, response]) => {
       if (!ok) {
         message.error(`${statusCode} ${statusText}: ${response.message || 'unknown error'}`);
         return;
@@ -103,7 +104,7 @@ export default () => {
       return;
     }
     const requests = configsBuffer.map(configName => {
-      return interactive('RemoveConfigFromAgentGroup', {
+      return interactive(root, 'RemoveConfigFromAgentGroup', {
         groupName: agentGroup.groupName,
         configName,
       });

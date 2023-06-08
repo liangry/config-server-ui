@@ -16,7 +16,7 @@ import {Button, Form, message, Modal} from "antd";
 import {FormattedMessage} from "react-intl";
 import FormBuilder from "antd-form-builder";
 import React, {useContext, useEffect, useState} from "react";
-import {ConfigContext} from "../common/context";
+import {ConfigContext, RootContext} from "../common/context";
 import {interactive} from "../common/request";
 import {configTypes} from "../common/const";
 import yaml from 'js-yaml';
@@ -27,6 +27,7 @@ import 'brace/mode/yaml';
 import 'brace/theme/xcode';
 
 export default () => {
+  const {root} = useContext(RootContext);
   const {
     configVisible,
     config,
@@ -86,7 +87,7 @@ export default () => {
       },
     };
     setLoading(true);
-    interactive(action, params).then(async ([ok, statusCode, statusText, response]) => {
+    interactive(root, action, params).then(async ([ok, statusCode, statusText, response]) => {
       setLoading(false);
       if (!ok) {
         message.error(`${statusCode} ${statusText}: ${response.message || 'unknown error'}`);

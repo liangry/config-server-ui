@@ -13,8 +13,6 @@
 // limitations under the License.
 
 import {v4 as uuidv4} from 'uuid';
-import protobuf from 'protobufjs';
-import proto from "./user.proto";
 
 const methods = {
   CreateAgentGroup: 'POST',
@@ -36,8 +34,7 @@ const methods = {
   ListAgents: 'POST',
 };
 
-export const interactive = async (action, params) => {
-  const root = await protobuf.load(proto);
+export const interactive = async (root, action, params) => {
   const reqType = root.lookupType(`configserver.proto.${action}Request`);
   const message = reqType.create({
     requestId: uuidv4(),
