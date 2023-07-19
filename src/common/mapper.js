@@ -23,6 +23,7 @@ export const mapAgentGroup = (agentGroup) => {
         value: item.value,
       }
     }),
+    tagOperator: agentGroup.tagOperator,
   };
 };
 
@@ -77,5 +78,9 @@ export const mapAgent = (agent) => {
     runningStatus: agent.runningStatus,
     startupTime: agent.startupTime,
     interval: agent.interval,
+    latestBeatTime: agent.latestBeatTime,
+    beatCycleTime: agent.beatCycleTime,
+    successBeatCount: agent.successBeatCount,
+    failBeatCount: agent.failBeatCount,
   };
 };

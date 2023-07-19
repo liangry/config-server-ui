@@ -21,6 +21,7 @@ import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons";
 import {interactive} from "../common/request";
 import {mapTimestamp} from "../common/util";
 import {mapAgent} from "../common/mapper";
+import {runningStatus, tagOperators} from "../common/const";
 
 export default () => {
   const {root} = useContext(RootContext);
@@ -149,7 +150,7 @@ export default () => {
                       <MinusCircleOutlined onClick={() => remove(name)} />
                     </Space>
                   ))}
-                  <Form.Item>
+                  <Form.Item style={{ marginBottom: 0 }}>
                     <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
                       <FormattedMessage id="add_field" />
                     </Button>
@@ -160,15 +161,28 @@ export default () => {
           );
         },
       },
+      {
+        key: 'tagOperator',
+        label: <FormattedMessage id="group_tag_operator" />,
+        message: <FormattedMessage id="form_item_required" />,
+        widget: 'radio-group',
+        buttonGroup: true,
+        options: tagOperators.map((item, index) => {
+          return {
+            value: index,
+            label: <FormattedMessage id={item} />,
+          };
+        }),
+      },
     ],
   };
 
   const agentColumns = [
-    {
-      key: 'agentId',
-      dataIndex: 'agentId',
-      title: <FormattedMessage id="agent_id" />,
-    },
+    // {
+    //   key: 'agentId',
+    //   dataIndex: 'agentId',
+    //   title: <FormattedMessage id="agent_id" />,
+    // },
     {
       key: 'version',
       dataIndex: 'version',
@@ -180,9 +194,21 @@ export default () => {
       title: <FormattedMessage id="agent_ip" />,
     },
     {
+      key: 'runningStatus',
+      dataIndex: 'runningStatus',
+      title: <FormattedMessage id="agent_running_status" />,
+      render: (v) => runningStatus[v],
+    },
+    {
       key: 'startupTime',
       dataIndex: 'startupTime',
       title: <FormattedMessage id="agent_startup_time" />,
+      render: (ts) => mapTimestamp(ts),
+    },
+    {
+      key: 'latestBeatTime',
+      dataIndex: 'latestBeatTime',
+      title: <FormattedMessage id="agent_latest_beat_time" />,
       render: (ts) => mapTimestamp(ts),
     },
   ];
@@ -204,6 +230,9 @@ export default () => {
         <FormBuilder
           meta={meta}
           form={form}
+          initialValues={{
+            tagOperator: 0,
+          }}
         />
         {action === 'UpdateAgentGroup' && (
           <Form.Item

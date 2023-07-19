@@ -170,7 +170,7 @@ export default () => {
       key: 'tags',
       dataIndex: 'tags',
       title: <FormattedMessage id="group_tags" />,
-      render: (tags) => mapTags(tags),
+      render: (tags, record) => mapTags(tags, record.tagOperator),
     },
     {
       key: 'agentCount',

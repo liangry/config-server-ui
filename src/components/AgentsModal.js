@@ -17,6 +17,7 @@ import {FormattedMessage} from "react-intl";
 import React, {useContext} from "react";
 import {AgentsContext} from "../common/context";
 import {mapTags, mapTimestamp} from "../common/util";
+import {runningStatus} from "../common/const";
 
 export default () => {
   const {
@@ -52,36 +53,43 @@ export default () => {
       dataIndex: 'ip',
       title: <FormattedMessage id="agent_ip" />,
     },
-    {
-      key: 'hostname',
-      dataIndex: 'hostname',
-      title: <FormattedMessage id="agent_hostname" />,
-    },
-    {
-      key: 'region',
-      dataIndex: 'region',
-      title: <FormattedMessage id="agent_region" />,
-    },
-    {
-      key: 'zone',
-      dataIndex: 'zone',
-      title: <FormattedMessage id="agent_zone" />,
-    },
+    // {
+    //   key: 'hostname',
+    //   dataIndex: 'hostname',
+    //   title: <FormattedMessage id="agent_hostname" />,
+    // },
+    // {
+    //   key: 'region',
+    //   dataIndex: 'region',
+    //   title: <FormattedMessage id="agent_region" />,
+    // },
+    // {
+    //   key: 'zone',
+    //   dataIndex: 'zone',
+    //   title: <FormattedMessage id="agent_zone" />,
+    // },
     {
       key: 'tags',
       dataIndex: 'tags',
       title: <FormattedMessage id="agent_tags" />,
-      render: (tags) => mapTags(tags),
+      render: (tags, record) => mapTags(tags, record.tagOperator),
     },
     {
       key: 'runningStatus',
       dataIndex: 'runningStatus',
       title: <FormattedMessage id="agent_running_status" />,
+      render: (v) => runningStatus[v],
     },
     {
       key: 'startupTime',
       dataIndex: 'startupTime',
       title: <FormattedMessage id="agent_startup_time" />,
+      render: (ts) => mapTimestamp(ts),
+    },
+    {
+      key: 'latestBeatTime',
+      dataIndex: 'latestBeatTime',
+      title: <FormattedMessage id="agent_latest_beat_time" />,
       render: (ts) => mapTimestamp(ts),
     },
     {

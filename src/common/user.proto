@@ -8,6 +8,19 @@ enum ConfigType {
     AGENT_CONFIG = 1;
 }
 
+// Define Agent's running status
+enum RunningStatus {
+    INIT = 0;
+    ONLINE = 1;
+    OFFLINE = 2;
+}
+
+// Define AgentGroup's tag operator
+enum TagOperator {
+    LOGIC_AND = 0;
+    LOGIC_OR = 1;
+}
+
 // Define response code
 enum RespCode {
     ACCEPT = 0;
@@ -44,16 +57,21 @@ message AgentGroup {
     string group_name = 1;
     string description = 2;
     repeated AgentGroupTag tags = 3;
+    TagOperator tag_operator = 4;
 }
 
 message Agent {
-    string agent_id = 1;            // Required, Agent's unique identification
-    string agent_type = 2;          // Required, Agent's type(ilogtail, ..)
-    AgentAttributes attributes = 3; // Agent's basic attributes
-    repeated string tags =  4;      // Agent's tags
-    string running_status = 5;      // Required, Agent's running status
-    int64 startup_time = 6;         // Required, Agent's startup time
-    int32 interval = 7;             // Agent's heartbeat interval
+    string agent_id = 1;                // Required, Agent's unique identification
+    string agent_type = 2;              // Required, Agent's type(ilogtail, ..)
+    AgentAttributes attributes = 3;     // Agent's basic attributes
+    repeated AgentGroupTag tags =  4;   // Agent's tags
+    RunningStatus running_status = 5;   // Agent's running status
+    int64 startup_time = 6;             // Agent's startup time
+    int32 interval = 7;                 // Agent's heartbeat interval
+    int64 latest_beat_time = 8;         // Agent's latest heartbeat time
+    int64 beat_cycle_time = 9;          // Agent's heartbeat cycle time
+    int32 success_beat_count = 10;      // Agent's success heartbeat count
+    int32 fail_beat_count = 11;         // Agent's fail heartbeat count
 }
 
 // API: /User/CreateAgentGroup
@@ -110,7 +128,7 @@ message GetAgentGroupResponse {
     AgentGroup agent_group = 4;
 }
 
-// API: /User/ListAgentGroups/
+// API: /User/ListAgentGroups/ 
 
 message ListAgentGroupsRequest {
     string request_id = 1;

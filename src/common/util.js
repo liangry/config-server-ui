@@ -16,4 +16,12 @@ import moment from "moment";
 
 export const mapTimestamp = (ts) => (ts > 0 ? moment.unix(ts).format('YYYY-MM-DD HH:mm:ss') : '');
 
-export const mapTags = (tags) => tags.map(item => `${item.name} = ${item.value}`).join(', ');
+export const mapTags = (tags, operator) => {
+  let joiner = ', ';
+  if (operator === 0) {
+    joiner = ' && ';
+  } else if (operator === 1) {
+    joiner = ' || ';
+  }
+  return tags.map(item => `${item.name} = ${item.value}`).join(joiner);
+};

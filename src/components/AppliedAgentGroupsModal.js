@@ -184,6 +184,11 @@ export default () => {
         label: <FormattedMessage id="group_tags" />,
         viewWidget: (field) => mapTags(field.value),
       },
+      {
+        key: 'tagOperator',
+        label: <FormattedMessage id="group_tag_operator" />,
+        viewWidget: (field) => field.value === 0 ? <FormattedMessage id="group_tag_logic_and" /> : <FormattedMessage id="group_tag_logic_or" />,
+      },
     ],
   };
 

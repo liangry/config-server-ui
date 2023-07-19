@@ -16,3 +16,14 @@ export const configTypes = [
   'config_type_pipeline',
   // 'config_type_agent',
 ];
+
+export const tagOperators = [
+  'group_tag_logic_and',
+  'group_tag_logic_or',
+];
+
+export const runningStatus = [
+  'INIT',
+  'ONLINE',
+  'OFFLINE',
+];
